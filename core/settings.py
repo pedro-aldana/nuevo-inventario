@@ -67,6 +67,11 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    # Otros orígenes confiables
+    'https://nuevo-inventario-production.up.railway.app',
+]
+
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
@@ -159,5 +164,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-if not DEBUG:
-    CSRF_TRUSTED_ORIGINS = [' https://nuevo-inventario-production.up.railway.app']
