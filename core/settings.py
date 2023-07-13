@@ -171,3 +171,7 @@ if not DEBUG:
     CSRF_TRUSTED_ORIGINS = [
         'https://nuevo-inventario-production.up.railway.app'
     ]
+    
+    RAILWAY_CORS_ORIGINS = [
+        'https://nuevo-inventario-production.up.railway.app'
+    ]
