@@ -7,6 +7,8 @@ environ.Env.read_env()
 
 ENVIROMENT = env
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -91,8 +93,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "railway",
+        "USER": "postgres",
+        "PASSWORD": "tGkWTVB7btfjrss5ycg6",
+        "HOST": "containers-us-west-143.railway.app",
+        "PORT": "5634",
     }
 }
 PASSWORD_HASHERS = [
