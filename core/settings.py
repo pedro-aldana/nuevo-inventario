@@ -23,6 +23,14 @@ SECRET_KEY = '+h$8-*42al@buo%d4=@5s%m7it6f0@ark)0pt)3ym1bqa3z'
 DEBUG = True
 
 ALLOWED_HOSTS = ['nuevo-inventario-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = [
+    'https://nuevo-inventario-production.up.railway.app',
+    'http://nuevo-inventario-production.up.railway.app'
+]
+CSRF_ALLOWED_ORIGINS = ['https://nuevo-inventario-production.up.railway.app',
+    'http://nuevo-inventario-production.up.railway.app']
+CORS_ORIGINS_WHITELIST = ['https://nuevo-inventario-production.up.railway.app',
+    'http://nuevo-inventario-production.up.railway.app']
 
 
 # Application definition
@@ -162,19 +170,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https', 'http')
 
 
-if not DEBUG:
-    CORS_ORIGIN_WHITELIST = [
-        'https://nuevo-inventario-production.up.railway.app'
-    ]
-    
-    CSRF_TRUSTED_ORIGINS = [
-        'https://nuevo-inventario-production.up.railway.app',
-        'http://nuevo-inventario-production.up.railway.app'
-    ]
-    
-    RAILWAY_CORS_ORIGINS = [
-        'https://nuevo-inventario-production.up.railway.app'
-    ]
