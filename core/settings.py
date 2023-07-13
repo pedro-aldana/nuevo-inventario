@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     
+    'corsheaders',
+    
     'tailwind',
     'theme',
     
@@ -57,6 +59,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -164,3 +167,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+if not DEBUG:
+    CORS_ORIGIN_WHITELIST = [
+        'https://nuevo-inventario-production.up.railway.app'
+    ]
+    
+    CSRF_TRUSTED_ORIGINS = [
+        'https://nuevo-inventario-production.up.railway.app'
+    ]
