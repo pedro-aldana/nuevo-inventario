@@ -22,7 +22,7 @@ SECRET_KEY = '+h$8-*42al@buo%d4=@5s%m7it6f0@ark)0pt)3ym1bqa3z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['nuevo-inventario-production.up.railway.app']
 
 
 # Application definition
@@ -70,10 +70,6 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    # Otros orígenes confiables
-    'https://nuevo-inventario-production.up.railway.app',
-]
 
 ROOT_URLCONF = "core.urls"
 
