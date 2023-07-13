@@ -162,6 +162,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https', 'http')
+
 
 if not DEBUG:
     CORS_ORIGIN_WHITELIST = [
@@ -169,7 +171,8 @@ if not DEBUG:
     ]
     
     CSRF_TRUSTED_ORIGINS = [
-        'https://nuevo-inventario-production.up.railway.app'
+        'https://nuevo-inventario-production.up.railway.app',
+        'http://nuevo-inventario-production.up.railway.app'
     ]
     
     RAILWAY_CORS_ORIGINS = [
