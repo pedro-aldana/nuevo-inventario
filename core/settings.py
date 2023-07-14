@@ -22,7 +22,7 @@ SECRET_KEY = '+h$8-*42al@buo%d4=@5s%m7it6f0@ark)0pt)3ym1bqa3z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nuevo-inventario-production.up.railway.app']
+ALLOWED_HOSTS = ['nuevo-inventario-production.up.railway.app', '*']
 CSRF_TRUSTED_ORIGINS = [
     'https://nuevo-inventario-production.up.railway.app',
     'http://nuevo-inventario-production.up.railway.app'
@@ -113,6 +113,7 @@ DATABASES = {
         "PORT": "5634",
     }
 }
+
 PASSWORD_HASHERS = [
     # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
     "django.contrib.auth.hashers.Argon2PasswordHasher",

@@ -30,8 +30,12 @@ Cuenta Mesa
                 <th scope="col" class="px-6 py-3">
                    Pagado
                 </th>
+                <th scope="col" class="px-6 py-3">
+                   Editar
+                </th>
             </tr>
         </thead>
+            
         
                 
                 <tbody>
@@ -51,12 +55,18 @@ Cuenta Mesa
                                 <td class="px-6 py-4 ">
                                     ${{venta.monto_mesa}}
                                 </td>
+                                
                                 <td class="px-6 py-4 ">
                                     <a href="{% url 'inventory:delete' id=venta.id %}"><button  class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Pago</button></a>
+                                </td>
+                                <td class="px-6 py-4 ">
+                                    <a href="{% url 'inventory:edit_venta' id=venta.id %}"><button  class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900">Editar</button></a>
                                 </td>
                             </tr>
                            
                         </div>
+
+                       
                         
                     {% empty %}
                             <h2 class="text-lg text-center mt-2 font-semibold text-slate-800 dark:text-slate-100 mb-2">
@@ -65,7 +75,22 @@ Cuenta Mesa
                     {% endfor %}
                 </tbody> 
     </table>
+    
+
+    
 </div>
+
+
+ {% if total_pagar_suma %}
+    <div  class="mt-14 lg:ml-80 lg:pl-20 flex items-center justify-center    max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${{ total_pagar_suma }} Total a pagar</h5>
+    <a href="{% url 'inventory:delete_mesa' id=mesa.id %}" class="ml-10 focus:outline-none text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-900">pagado</a>
+    </div>
+{% endif %}
+
+
+
+
 
 
 

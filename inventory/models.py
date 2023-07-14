@@ -1,7 +1,7 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
-from datetime import datetime
+from datetime import date
 # Create your models here.
 
 
@@ -27,7 +27,7 @@ class Venta_mesa(models.Model):
     mesaId = models.ForeignKey(Mesa, on_delete=models.CASCADE)
     cantidad_vendida = models.IntegerField()
     monto_mesa = models.DecimalField(max_digits=8, decimal_places=3,default=0,blank=True)
-    fecha_venta = models.DateField()  
+    fecha_venta = models.DateField(default=date.today)  
     
     def __str__(self) -> str:
         return f"Venta de: {self.producto.nombre} en la {self.mesaId.nombre_mesa}"
@@ -41,10 +41,11 @@ class Venta_mesa(models.Model):
     
     
     
-    def save(self, *args, **kwargs):
-        if self.cantidad_vendida > self.producto.cantidad:
-            raise ValueError("La cantidad vendida supera la cantidad disponible en el inventario.")
-        super(Venta_mesa, self).save(*args, **kwargs)   
+    # def save(self, *args, **kwargs):
+    #     if self.cantidad_vendida > self.producto.cantidad:
+    #         raise ValueError("La cantidad vendida supera la cantidad disponible en el inventario.")
+    #     super(Venta_mesa, self).save(*args, **kwargs)
+          
     
     
 class Registro_ventas(models.Model):
@@ -61,12 +62,44 @@ class Registro_ventas(models.Model):
 
 
 
+@receiver(pre_save, sender=Venta_mesa)
+def actualizar_inventario_pre_save(sender, instance, **kwargs):
+    venta = instance
+
+    # Si la venta ya existe en la base de datos
+    if venta.pk:
+        venta_db = Venta_mesa.objects.get(pk=venta.pk)
+        cantidad_anterior = venta_db.cantidad_vendida
+    else:
+        cantidad_anterior = 0
+
+    # Calcula la diferencia entre la cantidad anterior y la nueva cantidad vendida
+    diferencia_cantidad = venta.cantidad_vendida - cantidad_anterior
+
+    # Actualizar el inventario si la cantidad vendida ha cambiado
+    if diferencia_cantidad != 0:
+        producto = venta.producto
+        producto.cantidad -= diferencia_cantidad
+        producto.save()
+
 @receiver(post_save, sender=Venta_mesa)
-def actualizar_inventario(sender, instance, created, **kwargs):
-    if created:
-        producto = instance.producto
-        producto.cantidad -= instance.cantidad_vendida
-        producto.save()    
+def actualizar_inventario_post_save(sender, instance, **kwargs):
+    venta = instance
+
+    # Si la venta es nueva, se procesó en pre_save
+    if not kwargs.get('created'):
+        # Verificar si la cantidad vendida ha cambiado
+        venta_db = Venta_mesa.objects.get(pk=venta.pk)
+        if venta.cantidad_vendida != venta_db.cantidad_vendida:
+            producto = venta.producto
+
+            # Restaurar la cantidad original antes de la edición
+            producto.cantidad += venta_db.cantidad_vendida
+
+            # Descontar la cantidad actualizada
+            producto.cantidad -= venta.cantidad_vendida
+
+            producto.save()
 
 
 @receiver(post_save, sender=Venta_mesa)

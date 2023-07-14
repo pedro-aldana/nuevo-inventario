@@ -4,7 +4,8 @@ from django.contrib.auth.views import LoginView,LogoutView
 from . import views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
+    path('redireccionar_admin/', views.redireccionar_admin, name='redireccionar_admin'),
     path('',views.HomeView, name="home"),
     
     path('', include('inventory.urls')),

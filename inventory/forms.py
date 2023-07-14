@@ -29,7 +29,7 @@ class ProductForm(ModelForm):
 class VentasForm(ModelForm):
     class Meta:
         model = Venta_mesa
-        fields = '__all__'
+        fields = ('producto','mesaId','cantidad_vendida')
         
     
     producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None, widget=forms.Select(attrs={
@@ -45,10 +45,7 @@ class VentasForm(ModelForm):
         'placeholder': 'ej: 30'
     })) 
     
-    fecha_venta = forms.DateField(widget=forms.DateInput(attrs={
-        'class': INPUT_CLASS,
-        'type': 'date'
-    }))
+    
               
         
     
