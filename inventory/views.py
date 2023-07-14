@@ -164,9 +164,12 @@ def vender(request):
         
         else:
             
+           
+            
             form = VentasForm()
             context = {
-                'form':form
+                'form':form,
+                
             }
             return render(request, 'pages/crud/vender.html', context)        
     except ValueError as e:
@@ -235,21 +238,36 @@ def agregar_mesas(request):
 
 @login_required
 def detail(request, mesa_id):
+    try:
     
-    mesa = get_object_or_404(Mesa, id=mesa_id)
-    ventas = Venta_mesa.objects.filter(mesaId=mesa)
-    total_pagar_suma = ventas.aggregate(total_suma=Sum('monto_mesa'))['total_suma']
-    
-    
-
-    context = {
-        'mesa': mesa,
-        'ventas':ventas,
-        'total_pagar_suma':total_pagar_suma
+        if request.method == 'POST':
+            form = VentasForm(request.POST)
+            
+            if form.is_valid():
+                form.save()
+            
+            return redirect('inventory:detail')
         
-    }
+        else:
+            mesa = get_object_or_404(Mesa, id=mesa_id)
+            ventas = Venta_mesa.objects.filter(mesaId=mesa)
+            total_pagar_suma = ventas.aggregate(total_suma=Sum('monto_mesa'))['total_suma']
+            form = VentasForm()
+            context = {
+                'mesa': mesa,
+                'ventas':ventas,
+                'total_pagar_suma':total_pagar_suma,
+                'form':form
+                
+            }
+            return render(request, 'pages/detail.html',context)        
+    except ValueError as e:
+        error_message = str(e)
+        return  render(request, 'messages/error.html', {
+            'error_message': error_message
+        })   
     
-    return render(request, 'pages/detail.html',context)    
+            
 
 @login_required
 def delete(request,id):
