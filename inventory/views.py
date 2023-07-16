@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
+
 from django.contrib.auth.decorators import login_required
 
 # autorizacion
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 from django.http import HttpResponse
+from django.views import View
 from django.contrib import messages
 from .models import Producto,Mesa,Venta_mesa,Registro_ventas
 from .forms import ProductForm,VentasForm,MesaForm
@@ -151,7 +153,8 @@ def ventas(request):
     return render(request, 'pages/ventas.html', context)
 
 @login_required
-def vender(request):
+def vender(request,mesa_id):
+    mesa = Mesa.objects.get(id=mesa_id)
     try:
     
         if request.method == 'POST':
@@ -166,7 +169,7 @@ def vender(request):
             
            
             
-            form = VentasForm()
+            form = VentasForm(initial={'mesaId':mesa})
             context = {
                 'form':form,
                 
@@ -183,26 +186,32 @@ def edit_ventas(request,id):
     
     venta = Venta_mesa.objects.get(id=id)
     
-    if request.method == 'GET':
-        form = VentasForm(instance= venta)
-        context ={
-            'form':form,
-            'id': id
-        }
-        return render(request, 'pages/crud/editar_venta.html', context)
-        
-    if request.method == 'POST':
-        form = VentasForm(request.POST, instance= venta)
-        if form.is_valid():
-            form.save()
-        
-        context = {
-            'form':form,
-            'id':id
-        }
-        messages.success(request, 'Venta Editada correctamente')
-        return render(request, 'pages/crud/editar_venta.html',context) 
+    try:
     
+        if request.method == 'GET':
+            form = VentasForm(instance= venta)
+            context ={
+                'form':form,
+                'id': id
+            }
+            return render(request, 'pages/crud/editar_venta.html', context)
+            
+        if request.method == 'POST':
+            form = VentasForm(request.POST, instance= venta)
+            if form.is_valid():
+                form.save()
+            
+            context = {
+                'form':form,
+                'id':id
+            }
+            messages.success(request, 'Venta Editada correctamente')
+            return render(request, 'pages/crud/editar_venta.html',context) 
+    except ValueError as e:
+        error_message = str(e)
+        return  render(request, 'messages/error.html', {
+            'error_message': error_message
+        })  
     
 # VISTAS DE MESAS
 @login_required
@@ -238,21 +247,24 @@ def agregar_mesas(request):
 
 @login_required
 def detail(request, mesa_id):
+    mesa = Mesa.objects.get(id=mesa_id)
     try:
     
         if request.method == 'POST':
             form = VentasForm(request.POST)
             
             if form.is_valid():
-                form.save()
+                venta = form.save(commit=False)
+                venta.mesaId = mesa
+                venta.save()
             
-            return redirect('inventory:detail')
+            return redirect('inventory:mesas')
         
         else:
             mesa = get_object_or_404(Mesa, id=mesa_id)
             ventas = Venta_mesa.objects.filter(mesaId=mesa)
             total_pagar_suma = ventas.aggregate(total_suma=Sum('monto_mesa'))['total_suma']
-            form = VentasForm()
+            form = VentasForm(initial={'mesaId':mesa.id})
             context = {
                 'mesa': mesa,
                 'ventas':ventas,

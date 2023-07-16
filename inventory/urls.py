@@ -15,7 +15,7 @@ urlpatterns = [
     # Ventas
     path('ventas/', views.ventas, name="ventas"),
     path('ventas/reporte', views.generar_reporte, name="reporte"),
-    path('ventas/vender/', views.vender, name="vender"),
+    path('ventas/vender/<int:mesa_id>/', views.vender, name="vender"),
     path('ventas/editar/<int:id>', views.edit_ventas, name="edit_venta"),
     
     
@@ -28,4 +28,3 @@ urlpatterns = [
     
 ]
    
-

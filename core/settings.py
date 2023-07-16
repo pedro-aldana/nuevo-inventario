@@ -113,6 +113,7 @@ DATABASES = {
         "PORT": "5634",
     }
 }
+
 PASSWORD_HASHERS = [
     # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
     "django.contrib.auth.hashers.Argon2PasswordHasher",

@@ -76,11 +76,17 @@ def actualizar_inventario_pre_save(sender, instance, **kwargs):
     # Calcula la diferencia entre la cantidad anterior y la nueva cantidad vendida
     diferencia_cantidad = venta.cantidad_vendida - cantidad_anterior
 
-    # Actualizar el inventario si la cantidad vendida ha cambiado
+    # Verificar si la cantidad vendida ha cambiado
     if diferencia_cantidad != 0:
         producto = venta.producto
-        producto.cantidad -= diferencia_cantidad
-        producto.save()
+
+        # Verificar si la cantidad vendida supera la cantidad disponible en el inventario
+        if producto.cantidad < diferencia_cantidad:
+            raise ValueError("La cantidad vendida supera la cantidad disponible en el inventario.")
+        else:
+            # Actualizar la cantidad en el inventario
+            producto.cantidad -= diferencia_cantidad
+            producto.save()
 
 @receiver(post_save, sender=Venta_mesa)
 def actualizar_inventario_post_save(sender, instance, **kwargs):
@@ -96,10 +102,13 @@ def actualizar_inventario_post_save(sender, instance, **kwargs):
             # Restaurar la cantidad original antes de la edición
             producto.cantidad += venta_db.cantidad_vendida
 
-            # Descontar la cantidad actualizada
-            producto.cantidad -= venta.cantidad_vendida
-
-            producto.save()
+            # Verificar si la cantidad vendida supera la cantidad disponible
+            if venta.cantidad_vendida > producto.cantidad:
+                raise ValueError("La cantidad vendida supera la cantidad disponible en el inventario.")
+            else:
+                # Actualizar la cantidad en el inventario
+                producto.cantidad -= venta.cantidad_vendida
+                producto.save()
 
 
 @receiver(post_save, sender=Venta_mesa)

@@ -11,21 +11,21 @@ Ventas
 
 <div class="grid grid-cols-1 lg:grid-cols-1 p-4 gap-4">
   <div
-    class="relative flex flex-col min-w-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded"
+    class="relative flex flex-col min-w-0 break-words bg-gray-800 dark:bg-gray-800 w-full shadow-lg rounded"
   >
-    <div class="max-w-sm p-6 m-6 bg-white dark:bg-gray-800">
+    <div class="max-w-sm p-6 m-6 bg-gray-800 dark:bg-gray-800">
       <div class="px-5 pt-5">
         <header class="flex justify-between items-start mb-2">
           <img src="{% static 'img/excel.png' %}" width="32" height="32" alt="Icon 01" />
           <div class="relative inline-flex">
             <div
-              class="origin-top-right z-10 absolute top-full min-w-36 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 right-0 exit-done"
+              class="origin-top-right z-10 absolute top-full min-w-36 bg-slate-800 dark:bg-slate-800 border border-slate-700 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 right-0 exit-done"
               style="display: none"
             ></div>
           </div>
         </header>
         <h2
-          class="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2"
+          class="text-lg font-semibold text-white dark:text-slate-100 mb-2"
         >
           Reporte de ventas Excel
         </h2>
@@ -67,8 +67,8 @@ Ventas
 
 
 <div class="relative overflow-x-auto mt-5">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left text-gray-400 dark:text-gray-400">
+        <thead class="text-xs text-gray-400 uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
                     Nombre Producto
@@ -88,8 +88,8 @@ Ventas
         <tbody>
         {% for venta in ventas %}
 
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <tr class="bg-gray-800 border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium border-gray-600 whitespace-nowrap dark:text-white">
                     {{venta.nombre}}
                 </th>
                 <td class="px-6 py-4">

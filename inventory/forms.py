@@ -27,18 +27,22 @@ class ProductForm(ModelForm):
 
 
 class VentasForm(ModelForm):
+    mesaId = forms.ModelChoiceField(queryset=Mesa.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = Venta_mesa
-        fields = ('producto','mesaId','cantidad_vendida')
+        fields = ('producto','cantidad_vendida','mesaId')
         
     
     producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None, widget=forms.Select(attrs={
         'class': INPUT_CLASS,
     }))
     
-    mesaId = forms.ModelChoiceField(queryset=Mesa.objects.all(), empty_label=None, widget=forms.Select(attrs={
-        'class': INPUT_CLASS,
-    })) 
+    # mesaId = forms.ModelChoiceField(queryset=Mesa.objects.all(),widget=forms.Select(attrs={
+    #     'class': INPUT_CLASS,
+    #     'mesaId':forms.HiddenInput(),
+        
+        
+    # }))
     
     cantidad_vendida = forms.CharField(widget=forms.NumberInput(attrs={
         'class': INPUT_CLASS,
